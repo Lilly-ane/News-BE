@@ -25,3 +25,4 @@ const getArticleById = (req, res, next) => {
 };
 
 module.exports = { getArticleById, getArticles};
+
