@@ -2,6 +2,7 @@
 const {selectTopics} =require("../models/topics.models")
 
 
+
 const getTopics = (req, res, next) => {
     selectTopics()
     .then((topics) => {
