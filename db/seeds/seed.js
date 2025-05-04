@@ -1,5 +1,6 @@
 const db = require("../connection");
 const format = require("pg-format");
+const { topicData, userData, articleData, commentData } = require("../data/development-data/index")
 
 const seed = ({ topicData, userData, articleData, commentData }) => {
   return db
@@ -121,5 +122,18 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
     });
 };
 
+// const runSeed = () => {
+//   return seed({ topicData, userData, articleData, commentData })
+//     .then(() => db.end()) 
+//     .catch((err) => {
+//       console.error("Eroare la seed:", err);
+//       return db.end(); 
+//     });
+// };
+
+
+
 module.exports = seed;
+
+
  
