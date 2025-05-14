@@ -1,4 +1,5 @@
 const { selectArticleById, selectArticles} = require("../models/articles.model");
+const endpoints =require("../endpoints.json")
 
 const db = require("../db/connection");
 

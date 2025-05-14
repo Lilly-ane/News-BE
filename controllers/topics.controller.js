@@ -1,5 +1,6 @@
 
 const {selectTopics} =require("../models/topics.models")
+const endpoints =require("../endpoints.json")
 
 
 
