@@ -1,26 +1,14 @@
-const { selectArticleById} = require("../models/articles.model");
-const { selectComments } = require("../models/comments.model");
 
-getComments = (req, res, next) => {
-    const article_id = req.params.article_id
-        if (isNaN(article_id)) {
-        return res.status(400).send({msg: "Bad request - article_id must be a number"});
-    }
-    selectArticleById(article_id)
-    .then((article) => {
-        if (!article) {
-            return res.status(404).send({ msg: "Article not found"});
-        }
-        return selectComments(article_id)
+const { selectCommentsByArticleId} = require("../models/comments.model");
+const endpoints =require("../endpoints.json")
 
-    })
-    .then((comments) => {
-        if (comments.length === 0) {
-           return res.status(200).send({comments: [], msg: "No comments found for this article"})
-        }
-        res.status(200).send({ comments })
-    })
-    .catch(next)
+
+const getCommentsByArticleId = (request, response, next) => {
+    const { article_id } = request.params 
+
+        return selectCommentsByArticleId(article_id).then((comment) => {
+            response.status(200).send({ comment })
+        })
 }
 
-module.exports = { getComments }
+module.exports = {getCommentsByArticleId}

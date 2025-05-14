@@ -1,12 +1,14 @@
 const db= require("../db/connection")
 
-selectComments = (article_id) => {
-    return db.query(
-        `SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC;`, [article_id])
-        .then((result) => {
-            // console.log(result.rows);
-            return result.rows
-        })
-  }
+selectCommentsByArticleId= (article_id) => {
+    return db
+   .query(`select comment_id, article_id, body, votes, author,
+       created_at from comments 
+       where article_id = $1
+       order by created_at desc; `, [article_id])
+       .then(( result ) => {
+         return result;
+       })
+}
 
-  module.exports = {selectComments}
+  module.exports = {selectCommentsByArticleId}
