@@ -1,4 +1,4 @@
-const { selectArticleById, selectArticles} = require("../models/articles.model");
+const { selectArticleById, selectArticles,changeVotesForArticle} = require("../models/articles.model");
 const endpoints =require("../endpoints.json")
 
 const db = require("../db/connection");
@@ -25,5 +25,14 @@ const getArticleById = (req, res, next) => {
     .catch(next);
 };
 
-module.exports = { getArticleById, getArticles};
+
+const modifyVotesForArticle = (request, response, next) => {
+    const { article_id } = request.params
+    const { inc_votes: newVote } = request.body
+    changeVotesForArticle(article_id, newVote).then((article) => {
+        response.status(201).send({ article })
+    })
+}
+
+module.exports = { getArticleById, getArticles, modifyVotesForArticle}
 

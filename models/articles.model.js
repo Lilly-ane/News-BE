@@ -33,4 +33,16 @@ const selectArticleById = (articleId) => {
     });
 };
 
-module.exports = { selectArticleById, selectArticles };
+const changeVotesForArticle = (article_id, newVote ) => {
+
+   return db
+   .query(`update articles 
+      set votes = greatest(votes + $1, 0)
+      where article_id = $2
+      returning *;`,
+   [newVote, article_id]).then((result) => {
+      return result.rows[0]
+   })
+}
+
+module.exports = { selectArticleById, selectArticles, changeVotesForArticle };

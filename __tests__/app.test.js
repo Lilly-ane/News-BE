@@ -148,3 +148,90 @@ describe("POST /api/articles/:article_id/comments", () => {
     })
   })
 })
+
+describe("PATCH /api/articles/:article_id", () => {
+  test("201: Responds with an object showing updated article when we add votes to an article", () => {
+     const postObj = {
+      inc_votes: 5
+     };
+    return request(app)
+    .patch("/api/articles/1")
+    .send(postObj)
+    .expect(201)
+    .then((response) => {
+
+      expect(response.body.article.article_id).toEqual(1)
+      expect(response.body.article.title).toEqual("Living in the shadow of a great man")
+      expect(response.body.article.topic).toEqual("mitch")
+      expect(response.body.article.author).toEqual("butter_bridge")
+      expect(response.body.article.body).toEqual("I find this existence challenging")
+      expect(response.body.article.created_at).toEqual("2020-07-09T20:11:00.000Z")
+      expect(response.body.article.votes).toEqual(105)
+      expect(response.body.article.article_img_url).toEqual("https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700")
+
+    })
+  }),
+  test("201: Responds with an object showing updated article when we subtract votes from an article with more than 0 votes", () => {
+    const postObj = {
+     inc_votes: -5
+    };
+   return request(app)
+   .patch("/api/articles/1")
+   .send(postObj)
+   .expect(201)
+   .then((response) => {
+
+     expect(response.body.article.article_id).toEqual(1)
+     expect(response.body.article.title).toEqual("Living in the shadow of a great man")
+     expect(response.body.article.topic).toEqual("mitch")
+     expect(response.body.article.author).toEqual("butter_bridge")
+     expect(response.body.article.body).toEqual("I find this existence challenging")
+     expect(response.body.article.created_at).toEqual("2020-07-09T20:11:00.000Z")
+     expect(response.body.article.votes).toEqual(95)
+     expect(response.body.article.article_img_url).toEqual("https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700")
+
+   })
+ }),
+ test("201: Responds with an object showing updated article when we subtract votes from an article with 0 votes", () => {
+  const postObj = {
+   inc_votes: -5
+  };
+ return request(app)
+ .patch("/api/articles/4")
+ .send(postObj)
+ .expect(201)
+ .then((response) => {
+
+   expect(response.body.article.article_id).toEqual(4)
+   expect(response.body.article.title).toEqual("Student SUES Mitch!")
+   expect(response.body.article.topic).toEqual("mitch")
+   expect(response.body.article.author).toEqual("rogersop")
+   expect(response.body.article.body).toEqual("We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages")
+   expect(response.body.article.created_at).toEqual("2020-05-06T01:14:00.000Z")
+   expect(response.body.article.votes).toEqual(0)
+   expect(response.body.article.article_img_url).toEqual("https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700")
+
+ })
+}),
+test("201: Responds with an object showing updated article when we add votes to an article with 0 votes", () => {
+  const postObj = {
+   inc_votes: 5
+  };
+ return request(app)
+ .patch("/api/articles/4")
+ .send(postObj)
+ .expect(201)
+ .then((response) => {
+  
+   expect(response.body.article.article_id).toEqual(4)
+   expect(response.body.article.title).toEqual("Student SUES Mitch!")
+   expect(response.body.article.topic).toEqual("mitch")
+   expect(response.body.article.author).toEqual("rogersop")
+   expect(response.body.article.body).toEqual("We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages")
+   expect(response.body.article.created_at).toEqual("2020-05-06T01:14:00.000Z")
+   expect(response.body.article.votes).toEqual(5)
+   expect(response.body.article.article_img_url).toEqual("https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700")
+
+ })
+})
+})
