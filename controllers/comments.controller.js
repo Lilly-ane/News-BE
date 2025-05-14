@@ -1,5 +1,5 @@
 
-const { selectCommentsByArticleId, addCommentForArticle} = require("../models/comments.model");
+const { selectCommentsByArticleId, addCommentForArticle, deleteComment} = require("../models/comments.model");
 const endpoints =require("../endpoints.json")
 
 
@@ -19,6 +19,14 @@ const getCommentsByArticleId = (request, response, next) => {
     })
 }
 
+const removeComment = (request, response, next) => {
+    const { comment_id } = request.params
+
+    deleteComment(comment_id).then(( ) => {
+        response.status(204).send()
+    })
+}
 
 
-module.exports = {getCommentsByArticleId, postCommentForArticle}
+
+module.exports = {getCommentsByArticleId, postCommentForArticle, removeComment}
