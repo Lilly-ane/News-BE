@@ -19,9 +19,14 @@ const addCommentForArticle = (article_id, username, body) => {
       ($1, $2, $3) returning *;`,
    [article_id, username, body]).then((result) => {
       return result.rows[0]
-
-
    })
 }
 
-  module.exports = {selectCommentsByArticleId, addCommentForArticle}
+ const deleteComment = (comment_id) => {
+   return db
+   .query(`delete from comments
+      where comment_id = $1
+      returning *;`, [comment_id])
+}
+
+  module.exports = {selectCommentsByArticleId, addCommentForArticle, deleteComment}
