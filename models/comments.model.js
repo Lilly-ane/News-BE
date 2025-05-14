@@ -11,4 +11,17 @@ selectCommentsByArticleId= (article_id) => {
        })
 }
 
-  module.exports = {selectCommentsByArticleId}
+const addCommentForArticle = (article_id, username, body) => {
+   
+   return db
+   .query(`insert into comments (article_id, author, body)
+      values
+      ($1, $2, $3) returning *;`,
+   [article_id, username, body]).then((result) => {
+      return result.rows[0]
+
+
+   })
+}
+
+  module.exports = {selectCommentsByArticleId, addCommentForArticle}

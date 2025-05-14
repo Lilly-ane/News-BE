@@ -127,3 +127,24 @@ describe("GET /api/articles/:article_id/comments", () => {
     })
   })
 })
+
+
+describe("POST /api/articles/:article_id/comments", () => {
+  test("201: Responds with an object showing newly inserted comment", () => {
+     const postObj = {
+      username: "icellusedkars",
+      body:"This gif is awesome"
+     };
+    return request(app)
+    .post("/api/articles/3/comments")
+    .send(postObj)
+    .expect(201)
+    .then((response) => {
+      
+      expect(response.body.newComment.article_id).toEqual(3)
+      expect(response.body.newComment.body).toEqual("This gif is awesome")
+      expect(response.body.newComment.author).toEqual("icellusedkars")
+
+    })
+  })
+})
