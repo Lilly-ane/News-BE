@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 
 const { getApi } = require("./controllers/api.controller");
 const { getTopics } = require("./controllers/topics.controller");
 const { getArticleById,getArticles, modifyVotesForArticle } = require("./controllers/articles.controller");
 const {getUsers,getUserByUsername} =require("./controllers/users.controller")
 const { getCommentsByArticleId, postCommentForArticle,removeComment} = require("./controllers/comments.controller");
+app.use(cors());
 app.use(express.json());
 
 app.get("/api", getApi);
