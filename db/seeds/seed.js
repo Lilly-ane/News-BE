@@ -1,6 +1,11 @@
 const db = require("../connection");
 const format = require("pg-format");
-const { topicData, userData, articleData, commentData } = require("../data/development-data/index")
+const {
+  topicData,
+  userData,
+  articleData,
+  commentData,
+} = require("../data/development-data/index");
 
 const seed = ({ topicData, userData, articleData, commentData }) => {
   return db
@@ -104,34 +109,32 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
     })
 
     // INSERT COMMENTS
-    .then(() => {
+    .then((insertedArticles) => {
+      const articleRef = insertedArticles.rows.reduce((acc, article) => {
+        acc[article.title] = article.article_id;
+        return acc;
+      }, {});
+console.log("articleRef:", articleRef);
+
       const formattedComments = commentData.map(
-        ({ article_id, body, votes, author, created_at }) => [
-          article_id,
+        ({ article_title, body, votes, author, created_at }) => [
+          articleRef[article_title],
           body,
           votes,
           author,
           new Date(created_at),
         ]
       );
+console.log("formattedComments:", formattedComments);
+
       const insertCommentsQuery = format(
         `INSERT INTO comments (article_id, body, votes, author, created_at) VALUES %L RETURNING *;`,
         formattedComments
       );
+
       return db.query(insertCommentsQuery);
     });
 };
-
-// const runSeed = () => {
-//   return seed({ topicData, userData, articleData, commentData })
-//     .then(() => db.end()) 
-//     .catch((err) => {
-//       console.error("Eroare la seed:", err);
-//       return db.end(); 
-//     });
-// };
-
-
 
 module.exports = seed;
 
