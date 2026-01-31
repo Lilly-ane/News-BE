@@ -1,32 +1,38 @@
+const {
+  selectCommentsByArticleId,
+  addCommentForArticle,
+  deleteComment,
+} = require("../models/comments.model");
 
-const { selectCommentsByArticleId, addCommentForArticle, deleteComment} = require("../models/comments.model");
-const endpoints =require("../endpoints.json")
+const getCommentsByArticleId = (req, res, next) => {
+  const { article_id } = req.params;
 
-
-const getCommentsByArticleId = (request, response, next) => {
-    const { article_id } = request.params 
-
-        return selectCommentsByArticleId(article_id).then((comment) => {
-            response.status(200).send({ comment })
-        })
-}
-
- const postCommentForArticle = (request, response, next) => {
-    const { article_id } = request.params
-    const{ username, body } = request.body
-    addCommentForArticle(article_id, username, body).then((newComment) => {
-        response.status(201).send({ newComment })
+  selectCommentsByArticleId(article_id)
+    .then((comments) => {
+      res.status(200).send({ comments }); // <- plural
     })
-}
+    .catch(next);
+};
 
-const removeComment = (request, response, next) => {
-    const { comment_id } = request.params
+const postCommentForArticle = (req, res, next) => {
+  const { article_id } = req.params;
+  const { username, body } = req.body;
 
-    deleteComment(comment_id).then(( ) => {
-        response.status(204).send()
+  addCommentForArticle(article_id, username, body)
+    .then((comment) => {
+      res.status(201).send({ comment }); // <- standard: { comment: {...} }
     })
-}
+    .catch(next);
+};
 
+const removeComment = (req, res, next) => {
+  const { comment_id } = req.params;
 
+  deleteComment(comment_id)
+    .then(() => {
+      res.status(204).send();
+    })
+    .catch(next);
+};
 
-module.exports = {getCommentsByArticleId, postCommentForArticle, removeComment}
+module.exports = { getCommentsByArticleId, postCommentForArticle, removeComment };

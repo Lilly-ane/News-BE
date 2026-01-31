@@ -1,15 +1,19 @@
-const db= require("../db/connection")
+const db = require("../db/connection");
 
-selectCommentsByArticleId= (article_id) => {
-    return db
-   .query(`select comment_id, article_id, body, votes, author,
-       created_at from comments 
-       where article_id = $1
-       order by created_at desc; `, [article_id])
-       .then(( result ) => {
-         return result;
-       })
-}
+const selectCommentsByArticleId = (article_id) => {
+  return db
+    .query(
+      `SELECT comment_id, article_id, body, votes, author, created_at
+       FROM comments
+       WHERE article_id = $1
+       ORDER BY created_at DESC;`,
+      [article_id]
+    )
+    .then((result) => {
+      return result.rows;   
+    });
+};
+
 
 const addCommentForArticle = (article_id, username, body) => {
    
