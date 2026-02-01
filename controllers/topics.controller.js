@@ -1,16 +1,11 @@
-
-const {selectTopics} =require("../models/topics.model")
-const endpoints =require("../endpoints.json")
-
-
+const { selectTopics } = require("../models/topics.model");
 
 const getTopics = (req, res, next) => {
-    selectTopics()
+  selectTopics()
     .then((topics) => {
-        //console.log(topics)
-        res.status(200).send(topics)
+      res.status(200).send({ topics });
     })
-    .catch(next)
+    .catch(next);
 };
 
-module.exports = {getTopics}
+module.exports = { getTopics };

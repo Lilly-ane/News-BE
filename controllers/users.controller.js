@@ -11,15 +11,15 @@ const getUsers = (req, res, next) => {
         })
 }
 
-const getUserByUsername = (req, res, next) => {
-    const username = req.params.username
-    return selectUserByUsername(username)
+getUserByUsername = (req, res, next) => {
+  const { username } = req.params;
+  selectUserByUsername(username)
     .then((user) => {
-        res.status(200).send({ user })
+      res.status(200).send({ user });
     })
-    .catch((err) => {
-        next(err)
-    })
-}
+    .catch(next);
+};
+
+
 
 module.exports = {getUsers,getUserByUsername}

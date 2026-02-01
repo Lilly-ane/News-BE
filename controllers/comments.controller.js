@@ -19,10 +19,11 @@ const postCommentForArticle = (req, res, next) => {
   const { username, body } = req.body;
 
   addCommentForArticle(article_id, username, body)
-    .then((comment) => {
-      res.status(201).send({ comment }); // <- standard: { comment: {...} }
-    })
-    .catch(next);
+  .then((newComment) => {
+    res.status(201).send({ newComment });
+  })
+  .catch(next);
+
 };
 
 const removeComment = (req, res, next) => {

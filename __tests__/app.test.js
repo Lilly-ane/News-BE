@@ -29,11 +29,11 @@ describe("GET /api/topics", () => {
     return request(app)
       .get("/api/topics")
       .expect(200)
-      .then((response) => {
-        const body = response.body;
-        expect(body).toHaveLength(3);
-        expect(Array.isArray(body)).toBe(true);
-        body.forEach((topic) => {
+      .then(({ body }) => {
+        expect(body.topics).toHaveLength(3);
+        expect(Array.isArray(body.topics)).toBe(true);
+
+        body.topics.forEach((topic) => {
           expect(topic).toEqual({
             slug: expect.any(String),
             description: expect.any(String),
@@ -42,6 +42,7 @@ describe("GET /api/topics", () => {
       });
   });
 });
+
 
 describe("GET /api/articles/:article_id", () => {
   test("200: Responds with 1 article", () => {
@@ -109,7 +110,8 @@ describe("GET /api/articles/:article_id/comments", () => {
       .get("/api/articles/3/comments")
       .expect(200)
       .then((response) => {
-        const comments = response.body.comment.rows;
+      const comments = response.body.comments;
+
 
         comments.forEach((comment) => {
           expect(comment.length).not.toEqual(0);

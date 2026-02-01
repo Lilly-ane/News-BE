@@ -23,8 +23,9 @@ app.use(express.json());
 
 // API endpoints description
 app.get("/api", (req, res) => {
-  res.status(200).send(endpoints);
+  res.status(200).send({ endpoints });
 });
+
 
 app.get("/api/topics", getTopics);
 
@@ -44,5 +45,25 @@ app.get("/api/users/:username", getUserByUsername);
 app.all("*", (req, res) => {
   res.status(404).send({ msg: "Route not found" });
 });
+
+app.use((err, req, res, next) => {
+  if (err.status && err.msg) {
+    return res.status(err.status).send({ msg: err.msg });
+  }
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+  // Postgres "invalid input syntax for type integer"
+  if (err.code === "22P02") {
+    return res.status(400).send({ msg: "Invalid article_id" });
+  }
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+  res.status(500).send({ msg: "Internal Server Error" });
+});
+
 
 module.exports = app;
